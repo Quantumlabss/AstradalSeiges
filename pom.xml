@@ -6,7 +6,7 @@
 
     <groupId>io.github.Cubicl18</groupId>
     <artifactId>AstradalSeiges</artifactId>
-    <version>1.4-BETA</version>
+    <version>1.10.1-Dev</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -23,6 +23,8 @@
             <name>Lumine Public</name>
             <url>https://mvn.lumine.io/repository/maven-public/</url>
         </repository>
+
+
     </repositories>
 
     <dependencies>
@@ -32,6 +34,11 @@
             <version>1.19.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+
+
+
+
+
         <dependency>
             <groupId>com.ticxo.modelengine</groupId>
             <artifactId>api</artifactId>
