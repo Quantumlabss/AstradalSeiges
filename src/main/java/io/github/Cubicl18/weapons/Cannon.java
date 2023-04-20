@@ -1,103 +1,67 @@
 package io.github.Cubicl18.weapons;
 
 import com.ticxo.modelengine.api.ModelEngineAPI;
-import com.ticxo.modelengine.api.entity.BaseEntity;
-import com.ticxo.modelengine.api.entity.BukkitEntity;
-import com.ticxo.modelengine.api.entity.Dummy;
+import com.ticxo.modelengine.api.animation.AnimationHandler;
 import com.ticxo.modelengine.api.model.ActiveModel;
 import com.ticxo.modelengine.api.model.ModeledEntity;
-import com.ticxo.modelengine.api.nms.entity.fake.DummyRangeEntity;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.Location;
 import org.bukkit.entity.*;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapelessRecipe;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Cannon implements Listener {
-    public static ItemStack cannon;
-    public void init() {
-        createCannon();
+public class Cannon {
+    private Location location;
+    public static LivingEntity livingEntity;
+    public static ModeledEntity cannonEntity;
+    public ActiveModel activeModel;
+    private static int id;
 
 
-    }
-    //create trebuchet Item
-    public static void createCannon() {
-        ItemStack item = new ItemStack(Material.BAT_SPAWN_EGG, 1);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName("Cannon");
-        List<String> lore = new ArrayList<>();
-        lore.add("Cannon Weapon");
-        lore.add("Right Click Ground To Spawn!");
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        cannon = item;
-
-        //Shapeless Recipe
-        ShapelessRecipe cannonrecipe = new ShapelessRecipe(NamespacedKey.minecraft("cannonrecipe"), item);
-        cannonrecipe.addIngredient(2, Material.COBBLESTONE);
-        cannonrecipe.addIngredient(1, Material.ARROW);
-        cannonrecipe.addIngredient(1, Material.STRING);
-        //Bukkit.getServer().addRecipe(cannonrecipe);
-        Bukkit.addRecipe(cannonrecipe);
 
 
-    }
-    //spawn
-    @EventHandler
-    public void spawnCannon(PlayerInteractEvent e) {
-        Player p = e.getPlayer();
-        if (!(e.getAction() == Action.RIGHT_CLICK_BLOCK)) return;
+    public static ModeledEntity createCannonEntity(Location location) {
+
+
         ActiveModel activeModel = ModelEngineAPI.createActiveModel("cannon");
-        Dummy cannonEntity = ModelEngineAPI.createDummy();
-        ModeledEntity modeledEntity = ModelEngineAPI.createModeledEntity(cannonEntity);
+        //---redundant stuff---//
+        //Dummy cannonEntity = ModelEngineAPI.createDummy();
+        //ArmorStand livingEntity = location.getWorld().spawn(location, ArmorStand.class);
+        //---set base Entity---//
+        livingEntity = (Skeleton) location.getWorld().spawnEntity(location, EntityType.SKELETON);
+        livingEntity.setCollidable(false);
+        livingEntity.setAI(false);
+        livingEntity.setCustomName("Cannon");
+        livingEntity.setSilent(true);
+        livingEntity.setInvulnerable(true);
+
+        //---set ModelEngine Model---//
+        //Location cannonLocation = p.getLocation();
+        cannonEntity = ModelEngineAPI.getModeledEntity(livingEntity.getUniqueId());
+        cannonEntity = ModelEngineAPI.createModeledEntity(livingEntity);
+        //cannonEntity.setLocation(location);
+        ModeledEntity modeledEntity = ModelEngineAPI.createModeledEntity(livingEntity);
+
         modeledEntity.addModel(activeModel, true);
-
-        modeledEntity.showToPlayer(p);
-    }
-    public void fireCannon(PlayerInteractEntityEvent fire) {
-        Player p = fire.getPlayer();
-
-
-
-        if (fire.getRightClicked() instanceof Dummy) {
-            if (p.getInventory().getItemInMainHand().getType() == Material.POLISHED_BLACKSTONE && p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("Cannon Ammo")) {
-                //remove 1 ammo item from player
+        modeledEntity.setBaseEntityVisible(false);
+        AnimationHandler animationHandler = activeModel.getAnimationHandler();
+        animationHandler.getAnimations();
+        //animationHandler.playAnimation("attack", 1,1,1,true);
 
 
 
-                //fire projectile
+        return modeledEntity;
 
 
-                
-
-
-
-
-
-
-
-
-
-
-
-            }
-
-
-
-        }
     }
 
+
+
+
+
+
+
+
+    public Location getLocation() {
+        return location;
+    }
 
 
 

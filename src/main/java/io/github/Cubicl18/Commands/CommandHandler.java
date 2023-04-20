@@ -41,21 +41,18 @@ public class CommandHandler implements CommandExecutor {
                 return true;
             }
 
-            if (args.length > 0) {
-                if(exists(args[0])) {
-                    getExecutor(args[0]).onCommand(sender, cmd, commandLabel, args);
-                    return true;
-                } else {
-                    sender.sendMessage("This command does not exist!");
-                    return true;
+            if (exists(args[0])) {
+                getExecutor(args[0]).onCommand(sender, cmd, commandLabel, args);
+                return true;
+            } else {
+                sender.sendMessage("This command does not exist!");
+                return true;
 
-                }
             }
         } else {
             sender.sendMessage(ChatColor.RED + "You must be a player to use this command.");
             return true;
         }
-        return false;
     }
 
 

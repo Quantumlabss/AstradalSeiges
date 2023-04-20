@@ -1,84 +1,69 @@
 package io.github.Cubicl18.weapons;
 
 import com.ticxo.modelengine.api.ModelEngineAPI;
-import com.ticxo.modelengine.api.entity.Dummy;
+import com.ticxo.modelengine.api.animation.AnimationHandler;
 import com.ticxo.modelengine.api.model.ActiveModel;
 import com.ticxo.modelengine.api.model.ModeledEntity;
-import com.ticxo.modelengine.api.nms.entity.fake.DummyRangeEntity;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Snowball;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapelessRecipe;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.projectiles.ProjectileSource;
+import org.bukkit.Location;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Skeleton;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Trebuchet implements Listener {
-    public static ItemStack trebuchet;
-    public void init() {
-        createTrebuchet();
+public class Trebuchet {
+    private Location location;
+    public static LivingEntity livingEntity;
+    public static ModeledEntity trebuchetEntity;
+    public ActiveModel activeModel;
+    private static int id;
 
 
-    }
-    //create trebuchet Item
-    public static void createTrebuchet() {
-        ItemStack item = new ItemStack(Material.BAT_SPAWN_EGG, 1);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName("Trebuchet");
-        List<String> lore = new ArrayList<>();
-        lore.add("Trebuchet Weapon");
-        lore.add("Right Click Ground To Spawn!");
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        trebuchet = item;
 
-        //Shapeless Recipe
-        ShapelessRecipe trebuchetrecipe = new ShapelessRecipe(NamespacedKey.minecraft("trebuchetrecipe"), item);
-        trebuchetrecipe.addIngredient(2, Material.COBBLESTONE);
-        trebuchetrecipe.addIngredient(1, Material.ARROW);
-        //Bukkit.getServer().addRecipe(trebuchetrecipe);
-        Bukkit.addRecipe(trebuchetrecipe);
+    public static ModeledEntity createTrebuchetEntity(Location location) {
 
+        ActiveModel activeModel = ModelEngineAPI.createActiveModel("Cannon");
+        //---redundant stuff---//
+        //Dummy cannonEntity = ModelEngineAPI.createDummy();
+        //ArmorStand livingEntity = location.getWorld().spawn(location, ArmorStand.class);
+        //---set base Entity---//
+        livingEntity = (Skeleton) location.getWorld().spawnEntity(location, EntityType.SKELETON);
+        livingEntity.setCollidable(false);
+        livingEntity.setAI(false);
+        livingEntity.setCustomName("Trebuchet");
+        livingEntity.setSilent(true);
+        livingEntity.setInvulnerable(true);
 
-    }
-    //spawn trebuchet
-    @EventHandler
-    public void spawnTrebuchet(PlayerInteractEvent e) {
-        Player p = e.getPlayer();
-        if (!(e.getAction() == Action.RIGHT_CLICK_BLOCK)) return;
-        ActiveModel activeModel = ModelEngineAPI.createActiveModel("trebuchet");
-        Dummy dummy = ModelEngineAPI.createDummy();
-        ModeledEntity modeledEntity = ModelEngineAPI.createModeledEntity(dummy);
+        //---set ModelEngine Model---//
+        //Location cannonLocation = p.getLocation();
+        trebuchetEntity = ModelEngineAPI.getModeledEntity(livingEntity.getUniqueId());
+        trebuchetEntity = ModelEngineAPI.createModeledEntity(livingEntity);
+        //cannonEntity.setLocation(location);
+        ModeledEntity modeledEntity = ModelEngineAPI.createModeledEntity(livingEntity);
+
         modeledEntity.addModel(activeModel, true);
+        modeledEntity.setBaseEntityVisible(false);
+        AnimationHandler animationHandler = activeModel.getAnimationHandler();
+        animationHandler.getAnimations();
+        //animationHandler.playAnimation("attack", 1,1,1,true);
 
-        modeledEntity.showToPlayer(p);
+
+
+        return modeledEntity;
+
+
     }
 
-    //Fire
+
+
+
+
+
+
+
+    public Location getLocation() {
+        return location;
+    }
 
 
 
 }
-
-
-
-
-
-
-
-
-
-
 

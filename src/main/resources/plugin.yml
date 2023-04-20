@@ -1,14 +1,13 @@
 name: AstradalSeiges
-version: 1.0
+version: ${project.version}
 main: io.github.Cubicl18.AstradalSeigePlugin
 api-version: 1.19
-depend: [ModelEngine]
+depend: [ModelEngine, UltimateAdvancementAPI]
 commands:
   sieges:
     aliases: [s,sieges]
     description: commands for the AstradalSieges Plugin
     usage: /sieges
-    permissions:
 
 
 
