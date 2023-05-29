@@ -3,7 +3,7 @@
 This Plugin adds functional siege weapons to the game, with no mods!
 for Minecraft 1.19.2, more versions coming soon!
 
-put some pictures of the weapons here
+## Unfortunately, this plugin has been put on hold. hopefully development will restart soon!
 
 ---
 ## Dependancies ##
